@@ -2,6 +2,8 @@ from flask import Flask, render_template
 import datetime
 import http.client
 import json
+import os
+
 
 app = Flask(__name__, template_folder='templates', static_folder='staticfiles')
 
@@ -12,7 +14,7 @@ def ciel():
 @app.route('/snir')
 def snir():
     connexion = http.client.HTTPSConnection('api.openweathermap.org')
-    connexion.request("GET", "/data/2.5/weather?lat=" + str(48.3)+"&lon="+ str(4.08)+ "&APPID=af8ac9e76a4dee9b5ef91bcd83a77ee9&mode=json&units=metric&lang=fr")
+    connexion.request("GET", "/data/2.5/weather?lat=" + str(48.3)+"&lon="+ str(4.08)+ "&APPID="+os.environ['CLEAPI_OWM']+"&mode=json&units=metric&lang=fr")
     rep = connexion.getresponse()
     rep_str=rep.read()
     jsonDico = json.loads(rep_str.decode('utf-8'))
